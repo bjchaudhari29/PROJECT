@@ -19,6 +19,7 @@ int main() {
 	scanf("%d", &j);
 	while(j) {
 		a[i].sn = k;
+		k++;
 		printf("quantity :\n");
 		scanf("%d", &a[i].quantity);
 		printf("Enter name of product:\n");
@@ -27,7 +28,6 @@ int main() {
 		scanf("%lf", &a[i].price);
 		write(fd, &a[i], sizeof(a[0]));
 		i++;
-		k++;
 		printf("To enter Data press 1\nTo stop Press 0\n");
        	     	scanf("%d", &j);
 	}
