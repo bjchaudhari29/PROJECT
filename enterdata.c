@@ -18,7 +18,7 @@ int main() {
 	printf("To enter Data press 1\nTo stop Press 0\n");
 	scanf("%d", &j);
 	while(j) {
-		k = &a[i].sn;
+		a[i].sn = k;
 		printf("quantity :\n");
 		scanf("%d", &a[i].quantity);
 		printf("Enter name of product:\n");
