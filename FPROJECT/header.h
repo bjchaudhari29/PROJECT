@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#define SIZE 1024
+
+typedef struct employee {
+	char nav[64];
+	int id;
+	double salary;
+	int attendance;
+}employee;
+
+typedef struct node {
+	int sn;
+	int quantity;
+	char name[32];
+	double price;
+	int discount;
+}product;
+	
+typedef struct client {
+	char nm[64];
+	int sn;
+	double balance;
+}customer;
+
+typedef struct a {
+	int sr;
+	char item[32];
+	int qt;
+	double pr, disc;
+	struct a *next, *prev;
+}bnode;
+
+typedef struct list{
+	bnode *head, *tail;
+}list;
+
+void enterdata();
+void editdata();
+void addproduct();
+void printdata();
+void init(list *l);
+void print_bill(list *l);
+void create_bill(list *l);
+double total_amt(list *l);
+double total_disc(list *l);
+void enter_employee();
+void append_employee();
+void printedata();
+void mark_attendance(int num);

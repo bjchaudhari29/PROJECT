@@ -1,0 +1,96 @@
+#include "header.h"
+
+void payment(double amt) {
+	char a[64];
+	
+	customer b[SIZE];
+	int fd, x, n, i, count = 0, ch, fp;
+	double pbal = 0.00, tbill, payment, nbal;
+
+	printf("Enter name of customer\n");
+	scanf(" %[^\n]", a);
+	fd = open("All customers", O_RDONLY);
+	if(fd == -1) {
+		customerentry(a);
+	}
+	close(fd);
+	fd = open("All customers", O_RDONLY);
+	x = read(fp, &b, sizeof(b));
+	n = x / sizeof(b[0]);
+	close(fd);
+	for(i = 0; i < n; i++) {
+		if(!(strcmp(b[i].nm,a))) {
+			count++;
+		}
+	}
+	printf("%d\n", count);
+	if(count == 1) {
+		pbal = check_balance(a);
+	}
+	if(count == 0) {
+		customerentry(a);
+	}
+	tbill = pbal + amt;
+	printf("\nTotal bill including previous balance = %lf", tbill);
+	printf("\nTo pay bill now press 1\nTo pay it later press 0\n");
+	scanf("%d", &ch);
+	if(ch == 1) {
+		printf("\nEnter amount given by customer\n");
+		scanf("%lf", &payment);
+		nbal = tbill - payment;
+		printf("\nYour current balance = %lf\n", nbal);
+		edit_balance(nbal, a);
+	}
+	if(ch == 0) {
+		nbal = pbal + amt;
+		edit_balance(nbal, a);
+		printf("\nYour current balance = %lf\n", nbal);
+	}	
+	return;
+}
+
+double check_balance(char *a) {
+	int fd, x, n, i;
+	customer b[SIZE];
+	double bal;
+
+	fd = open("All customers", O_RDONLY);
+	x = read(fd, &b, sizeof(b));
+	n = x / sizeof(b[0]);
+	close(fd);
+	for(i = 0; i < n; i++) {
+		if(!(strcmp(b[i].nm,a))) {
+			bal = b[i].balance;
+		}
+	}
+	return bal;
+}
+
+void edit_balance(double x, char *u) {
+	int fd, fp, n, y, i, ch, q;
+	double ans;
+	customer b[SIZE];
+
+	fp = open("All customers", O_RDONLY);
+	
+	if(fp == -1) {
+		printf("Not able to edit\n");
+		return;
+	}
+	y = read(fp, &b, sizeof(b));
+	n = y / sizeof(b[0]);
+	close(fp);
+	fd = open("All customers", O_WRONLY , S_IRUSR | S_IWUSR);
+
+	for(i = 0; i < n; i++) {
+		if(!(strcmp(b[i].nm,u))) {
+			b[i].balance = x;
+			write(fd, &b[i], sizeof(b[0]));
+		}
+		else 
+			write(fd, &b[i], sizeof(b[0]));
+	}
+		
+	close(fd);
+	return;
+}
